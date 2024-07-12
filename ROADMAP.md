@@ -34,6 +34,8 @@ as possible.
   - [ ] No known Bugs
 
 - [ ] Documentation
+
+- [ ] Publish as a VSCode Extension
  
 
 
