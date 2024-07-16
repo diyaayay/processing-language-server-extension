@@ -1,0 +1,25 @@
+{
+  "name": "processing-language-server-extension",
+  "version": "0.0.1",
+  "author": "",
+  "description": "An LSP Extension for Processing(.pde)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "run": "echo (node index.js)"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/diyaayay/Processing-Language-Server-Extension.git"
+  },
+  "keywords": [],
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/diyaayay/Processing-Language-Server-Extension/issues"
+  },
+  "homepage": "https://github.com/diyaayay/Processing-Language-Server-Extension#readme",
+  "dependencies": {
+    "vscode-languageclient": "^9.0.1",
+    "vscode-languageserver": "^9.0.1"
+  }
+}
