@@ -3,8 +3,9 @@
         "target": "es6",
         "module": "commonjs",
         "outDir": "./out",
-        "rootDir": "./source",
+        "rootDir": "server",
         "strict": false,
-        "esModuleInterop": true
+        "esModuleInterop": true,
+        "noImplicitAny": false
     },
 }

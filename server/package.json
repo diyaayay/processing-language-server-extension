@@ -1,0 +1,25 @@
+{
+  "name": "lsp-server",
+  "description": "LSP Server",
+  "author": "Processing Foundation",
+  "version": "0.0.1",
+  "engines": {
+    "node": "*",
+  },
+  "main": "",
+  "scripts": {
+    "test": "echo"
+  },
+  "keywords": [],
+  "license": "MIT",
+  "dependencies": {
+    "rxjs": "7.8.1",
+    "java": "0.14.0",
+    "vscode-languageserver": "9.0.1",
+    "java-class-tools": "1.3.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/diyaayay/Processing-Language-Server-Extension.git"
+  }
+}
