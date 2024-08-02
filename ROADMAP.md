@@ -12,10 +12,10 @@ finding bugs, and hopefully contributing as soon
 as possible.
 
 - [ ] Stable architecture
-  - [ ] Integrate Processing Core
+  - [X] Integrate Processing Core
   - [ ] Lexer & Parser (ANTLR)
-  - [ ] Get the sketch
-  - [ ] Run the sketch
+  - [X] Get the sketch
+  - [X] Run the sketch
   - [ ] No known Bugs
 
 - [ ] LSP Extension
