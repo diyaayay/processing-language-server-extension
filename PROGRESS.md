@@ -25,6 +25,13 @@ Over the past few weeks, I have set up the prior work on LSP, and it is running 
 
 The [NPM Java](https://www.npmjs.com/package/java) package we're currently using is optimized for OpenJDK 7, while the Processing release works best with JDK 17.
 
+# Week-4
+
+I have set up the latest Processing 4.3 version to run locally on the server side and execute sketches in the extension host. This involved fetching JavaFX externally and creating a `JavaFX.jar`, generating a new `JRE` for Processing 4.3, and integrating the latest Processing `core.jar`.
+
+The goal now is to find a concrete way to set up this build so that it can be used for future work and to streamline the process of running Processing from VSCode or any Electron frontend.
+
+
 ## Next Steps
 
-In the coming weeks, the goal is to transition to a fully working Processing 4.1+ or 4.3 environment and then implement LSP features for it.
+In the coming weeks, the goal is to setup a client/server JSON-RPC architecture using VSCode LSP extension API and LSP docs, and to implement LSP features.
