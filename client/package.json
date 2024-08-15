@@ -1,26 +1,22 @@
 {
-  "name": "lsp-client",
-  "author": "Processing Foundation",
-  "version": "0.0.1",
-  "publisher": "Processing",
-  "description": "LSP Client",
-  "scripts": {
-    "update-vscode": "vscode-install",
-    "postinstall": "vscode-install"
-  },
-  "keywords": [],
-  "license": "MIT",
-  "engines": {
-    "vscode": "^1.60.0"
-  },
-  "dependencies": {
-    "vscode-languageclient": "9.0.1"
-  },
-  "devDependencies": {
-    "vscode": "^1.1.34"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/diyaayay/Processing-Language-Server-Extension.git"
-  }
+	"name": "lsp-sample-client",
+	"description": "VSCode part of a language server",
+	"author": "Microsoft Corporation",
+	"license": "MIT",
+	"version": "0.0.1",
+	"publisher": "vscode",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Microsoft/vscode-extension-samples"
+	},
+	"engines": {
+		"vscode": "^1.75.0"
+	},
+	"dependencies": {
+		"vscode-languageclient": "^9.0.1"
+	},
+	"devDependencies": {
+		"@types/vscode": "^1.75.1",
+		"@vscode/test-electron": "^2.3.9"
+	}
 }

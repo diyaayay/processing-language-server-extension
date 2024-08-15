@@ -1,11 +1,11 @@
-{
-    "compilerOptions": {
-        "target": "es6",
-        "module": "commonjs",
-        "outDir": "./out",
-        "rootDir": "server",
-        "strict": false,
-        "esModuleInterop": true,
-        "noImplicitAny": false
-    },
-}
+// {
+//     "compilerOptions": {
+//         "target": "es6",
+//         "module": "commonjs",
+//         "outDir": "./out",
+//         "rootDir": "server",
+//         "strict": false,
+//         "esModuleInterop": true,
+//         "noImplicitAny": false
+//     },
+// }
