@@ -16,9 +16,11 @@ as possible.
   - [ ] Lexer & Parser (ANTLR)
   - [X] Get the sketch
   - [X] Run the sketch
-  - [ ] No known Bugs
+  - [X] No known Bugs
 
 - [ ] LSP Extension
+  - [X] Setup Server
+  - [X] Setup Client
   - [ ] Workspace management
     - [ ] Sketch and SketchBook
   - [ ] Code completion
