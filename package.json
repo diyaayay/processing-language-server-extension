@@ -4,10 +4,14 @@
   "author": "Processing Foundation",
   "description": "An LSP Extension for Processing (.pde)",
   "main": "index.js",
-  "scripts": {
-    "test": "",
-    "run": ""
-  },
+
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -b",
+		"watch": "tsc -b -w",
+		"preinstall": "node preinstall.js",
+		"postinstall": "cd client && npm install && cd ../server && npm install && cd .."
+	},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/diyaayay/Processing-Language-Server-Extension.git"
