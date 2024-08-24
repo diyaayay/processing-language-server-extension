@@ -17,7 +17,7 @@
     "url": "git+https://github.com/diyaayay/Processing-Language-Server-Extension.git"
   },
   "keywords": [],
-  "license": "MIT",
+  "license": "GPL-3.0-only",
   "bugs": {
     "url": "https://github.com/diyaayay/Processing-Language-Server-Extension/issues"
   },
