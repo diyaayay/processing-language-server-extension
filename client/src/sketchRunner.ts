@@ -132,7 +132,7 @@ export class SketchRunner implements vscode.Disposable {
 				if (this._bufferedOutputChannel) {
 					this._bufferedOutputChannel.appendLine(`[Done] Stopped the sketch ${os.EOL}`);
 				}
-				this._child.kill('SIGTERM'); // or 'SIGTERM' if 'SIGINT' does not work
+				this._child.kill('SIGTERM');
 				this._child = null;
 				resolve(true);
 			} catch (error) {
