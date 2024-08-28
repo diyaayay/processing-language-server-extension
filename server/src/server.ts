@@ -150,21 +150,21 @@ connection.onDidChangeWatchedFiles(_change => {
 
 
 //perform auto completion
-connection.onCompletion(
-	(_textDocumentParams: CompletionParams): CompletionItem[] => {
-		return completion.decideCompletionMethods(_textDocumentParams, latestChangesInTextDoc)
-	}
-);
+// connection.onCompletion(
+// 	(_textDocumentParams: CompletionParams): CompletionItem[] => {
+// 		return completion.decideCompletionMethods(_textDocumentParams, latestChangesInTextDoc)
+// 	}
+// );
 
-connection.onCompletionResolve(
-	(item: CompletionItem): CompletionItem => {
-	// item.detail:"",
-	// item.documentation:""
-	// return item;
+// connection.onCompletionResolve(
+// 	(item: CompletionItem): CompletionItem => {
+// 	// item.detail:"",
+// 	// item.documentation:""
+// 	// return item;
 	
-	return {};
-	}
-);
+// 	return {};
+// 	}
+// );
 
 //ToDo: On hover
 
