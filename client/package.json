@@ -1,6 +1,6 @@
 {
 	"name": "lsp-client",
-	"description": "VSCode part of a language server",
+	"description": "Processing client for language server",
 	"author": "Processing Foundation",
 	"license": "GPL-3.0-only",
 	"version": "0.0.1",
