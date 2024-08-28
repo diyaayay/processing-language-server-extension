@@ -8,6 +8,7 @@ import {
 	InitializeParams,
 	DidChangeConfigurationNotification,
 	CompletionItem,
+	CompletionParams,
 	CompletionItemKind,
 	TextDocumentPositionParams,
 	TextDocumentSyncKind,
@@ -19,6 +20,7 @@ import {
 import {
 	TextDocument
 } from 'vscode-languageserver-textdocument';
+import { URI } from "vscode-uri";
 
 
 const connection = createConnection(ProposedFeatures.all);
@@ -33,6 +35,7 @@ let hasWorkspaceFolderCapability = false;
 let hasDiagnosticRelatedInformationCapability = false;
 
 connection.onInitialize((params: InitializeParams) => {
+	let workspaceRoot = params.rootUri ? URI.file(params.rootUri) : params.rootPath;
 	const capabilities = params.capabilities;
 
 	hasConfigurationCapability = !!(
