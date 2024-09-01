@@ -4,14 +4,13 @@
   "author": "Processing Foundation",
   "description": "An LSP Extension for Processing (.pde)",
   "main": "index.js",
-
-	"scripts": {
-		"vscode:prepublish": "npm run compile",
-		"compile": "tsc -b",
-		"watch": "tsc -b -w",
-		"preinstall": "node preinstall.js",
-		"postinstall": "cd client && npm install && cd ../server && npm install && cd .."
-	},
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -b",
+    "watch": "tsc -b -w",
+    "preinstall": "node preinstall.js",
+    "postinstall": "cd client && npm install && cd ../server && npm install && cd .."
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/diyaayay/Processing-Language-Server-Extension.git"
@@ -23,13 +22,13 @@
   },
   "homepage": "https://github.com/diyaayay/Processing-Language-Server-Extension#readme",
   "dependencies": {
+    "antlr4ts": "^0.5.0-alpha.4",
     "vscode-languageserver": "9.0.1"
   },
-
   "devDependencies": {
-		"@types/mocha": "10.0.7",
-		"@types/node": "20.14.12",
-		"eslint": "9.8.0",
-		"typescript": "5.5.4"
-}
+    "@types/mocha": "10.0.7",
+    "@types/node": "20.14.12",
+    "eslint": "9.8.0",
+    "typescript": "5.5.4"
+  }
 }
