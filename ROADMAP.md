@@ -21,7 +21,7 @@ as possible.
 - [ ] LSP Extension
   - [X] Setup Server
   - [X] Setup Client
-  - [] Grammar files
+  - [x] Grammar files
   - [ ] Workspace management
     - [ ] Sketch and SketchBook
   - [ ] Code completion
