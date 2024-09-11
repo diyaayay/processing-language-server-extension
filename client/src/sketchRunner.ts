@@ -51,7 +51,7 @@ export class SketchRunner implements vscode.Disposable {
         return this._child ? true : false;
     }
 
-	private async runSketch(): Promise<boolean> {
+	public async runSketch(): Promise<boolean> {
 		if (this.isRunning) {
 			this.stop();
 			vscode.window.showWarningMessage(`Sketch is already running, stopping sketch`);
