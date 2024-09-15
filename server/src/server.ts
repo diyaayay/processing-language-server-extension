@@ -17,7 +17,8 @@ import {
 	FileChangeType,
 	TextDocumentSyncKind,
 	RenameParams,
-	InitializeResult
+	InitializeResult,
+	Hover
 } from 'vscode-languageserver/node';
 import * as sketch from './sketch';
 import {
@@ -25,6 +26,8 @@ import {
 } from 'vscode-languageserver-textdocument';
 import * as diagnostics from './diagnostics';
 import * as completion from './completion';
+import * as hover from "./hover";
+import * as definition from "./definition";
 
 
 export let connection = createConnection(ProposedFeatures.all);
@@ -188,12 +191,12 @@ connection.onDidChangeWatchedFiles(_change => {
 	}
 });
 
-// Implementation for `goto definition` goes here
-// connection.onDefinition(
-// 	(_textDocumentParams: TextDocumentPositionParams): Definition | null => {
-// 		return definition.scheduleLookUpDefinition(_textDocumentParams.textDocument.uri,_textDocumentParams.position.line,_textDocumentParams.position.character)
-// 	}
-// )
+//Implementation for `goto definition` goes here
+connection.onDefinition(
+	(_textDocumentParams: TextDocumentPositionParams): Definition | null => {
+		return definition.scheduleLookUpDefinition(_textDocumentParams.textDocument.uri,_textDocumentParams.position.line,_textDocumentParams.position.character)
+	}
+)
 
 // Implementation for finding references
 // connection.onReferences(
@@ -236,22 +239,22 @@ connection.onCompletion(
 // 	}
 // );
 
-// Implementation for Hover request
-// connection.onHover(
-// 	(params: TextDocumentPositionParams): Hover | null => {
-// 		let hoverResult: Hover | null = null
-// 		if(sketch.getCompileErrors.length == 0){
-// 			hoverResult = hover.scheduleHover(params)
-// 		} else {
-// 			sketch.getCompileErrors().forEach(function(compileError){
-// 				let errorLine = compileError.lineNumber
-// 				hoverResult = hover.scheduleHover(params, errorLine)
-// 			})
-// 		}
-// 		// log.write(`Hover Invoked`);
-// 		return hoverResult
-// 	}
-// )
+connection.onHover(
+	(params: TextDocumentPositionParams): Hover | null => {
+		let hoverResult: Hover | null = null;
+		hoverResult = hover.onHoverinFile(params);
+		if(sketch.getCompileErrors.length == 0){
+			hoverResult = hover.onHoverinFile(params);
+		} else {
+			sketch.getCompileErrors().forEach(function(compileError){
+				let errorLine = compileError.lineNumber
+				hoverResult = hover.onHoverinFile(params, errorLine);
+			})
+		}
+		// log.write(`Hover Invoked`);
+		return hoverResult
+	}
+)
 
 documents.listen(connection);
 connection.listen();

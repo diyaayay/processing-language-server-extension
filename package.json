@@ -114,8 +114,6 @@
   },
   "homepage": "https://github.com/diyaayay/Processing-Language-Server-Extension#readme",
   "dependencies": {
-    "antlr4ts": "^0.5.0-alpha.4",
-    "vscode-languageserver": "9.0.1",
     "java-ast": "0.1.0"
   },
   "devDependencies": {
