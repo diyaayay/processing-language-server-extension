@@ -1,4 +1,3 @@
-
 import {
 	createConnection,
 	TextDocuments,
@@ -9,34 +8,38 @@ import {
 	DidChangeConfigurationNotification,
 	CompletionItem,
 	CompletionParams,
-	CompletionItemKind,
 	TextDocumentPositionParams,
+	Definition,
+	Location,
+	CodeLens,
+	CodeLensParams,
+	WorkspaceEdit,
+	FileChangeType,
 	TextDocumentSyncKind,
-	InitializeResult,
-	DocumentDiagnosticReportKind,
-	type DocumentDiagnosticReport
+	RenameParams,
+	InitializeResult
 } from 'vscode-languageserver/node';
-
+import * as sketch from './sketch';
 import {
 	TextDocument
 } from 'vscode-languageserver-textdocument';
-import { URI } from "vscode-uri";
+import * as diagnostics from './diagnostics';
+import * as completion from './completion';
 
 
-const connection = createConnection(ProposedFeatures.all);
+export let connection = createConnection(ProposedFeatures.all);
 
 
+
+// let documents: TextDocuments = new TextDocuments();
 const documents: TextDocuments<TextDocument> = new TextDocuments(TextDocument);
 
-
-
-let hasConfigurationCapability = false;
-let hasWorkspaceFolderCapability = false;
-let hasDiagnosticRelatedInformationCapability = false;
+let hasConfigurationCapability: boolean = false;
+let hasWorkspaceFolderCapability: boolean = false;
+export let hasDiagnosticRelatedInformationCapability: boolean = false;
 
 connection.onInitialize((params: InitializeParams) => {
-	let workspaceRoot = params.rootUri ? URI.file(params.rootUri) : params.rootPath;
-	const capabilities = params.capabilities;
+	let capabilities = params.capabilities;
 
 	hasConfigurationCapability = !!(
 		capabilities.workspace && !!capabilities.workspace.configuration
@@ -50,37 +53,38 @@ connection.onInitialize((params: InitializeParams) => {
 		capabilities.textDocument.publishDiagnostics.relatedInformation
 	);
 
-	const result: InitializeResult = {
-		capabilities: {
-			textDocumentSync: TextDocumentSyncKind.Incremental,
-			completionProvider: {
-				resolveProvider: true,
-				triggerCharacters: [ '.' ]
-			},
-			diagnosticProvider: {
-				interFileDependencies: false,
-				workspaceDiagnostics: false
-			},
-			hoverProvider: true,
-			definitionProvider : true,
-			codeLensProvider : {
-				resolveProvider: true
-			},
-			referencesProvider: true,
-			renameProvider: true
-		}
-	};
-	if (hasWorkspaceFolderCapability) {
-		result.capabilities.workspace = {
-			workspaceFolders: {
-				supported: true
-			}
-		};
-	}
-	return result;
+		const result: InitializeResult = {
+				capabilities: {
+					textDocumentSync: TextDocumentSyncKind.Incremental,
+					completionProvider: {
+						resolveProvider: true,
+						triggerCharacters: [ '.' ]
+					},
+					diagnosticProvider: {
+						interFileDependencies: false,
+						workspaceDiagnostics: false
+					},
+					hoverProvider: true,
+					definitionProvider : true,
+					// codeLensProvider : {
+					// 	resolveProvider: true
+					// },
+					referencesProvider: true,
+					renameProvider: true
+				}
+			};
+			if (hasWorkspaceFolderCapability) {
+						result.capabilities.workspace = {
+							workspaceFolders: {
+								supported: true
+							}
+						};
+					}
+					return result;
 });
 
 connection.onInitialized(() => {
+	connection.console.log(`Server initialized`);
 	if (hasConfigurationCapability) {
 		connection.client.register(DidChangeConfigurationNotification.type, undefined);
 	}
@@ -91,20 +95,18 @@ connection.onInitialized(() => {
 	}
 });
 
-
 interface ExampleSettings {
-	sketchFile: number;
+	maxNumberOfProblems: number;
 }
 
-const defaultSettings: ExampleSettings = { sketchFile: 1 };
+const defaultSettings: ExampleSettings = { maxNumberOfProblems: 1000 };
 let globalSettings: ExampleSettings = defaultSettings;
 
-
-const documentSettings: Map<string, Thenable<ExampleSettings>> = new Map();
+let documentSettings: Map<string, Thenable<ExampleSettings>> = new Map();
 
 connection.onDidChangeConfiguration(change => {
+	connection.console.log(`Config change event occured`);
 	if (hasConfigurationCapability) {
-		
 		documentSettings.clear();
 	} else {
 		globalSettings = <ExampleSettings>(
@@ -112,10 +114,10 @@ connection.onDidChangeConfiguration(change => {
 		);
 	}
 
-	connection.languages.diagnostics.refresh();
+	documents.all().forEach(diagnostics.checkForRealtimeDiagnostics);
 });
 
-function getDocumentSettings(resource: string): Thenable<ExampleSettings> {
+export function getDocumentSettings(resource: string): Thenable<ExampleSettings> {
 	if (!hasConfigurationCapability) {
 		return Promise.resolve(globalSettings);
 	}
@@ -130,44 +132,126 @@ function getDocumentSettings(resource: string): Thenable<ExampleSettings> {
 	return result;
 }
 
+export let latestChangesInTextDoc: TextDocument
+
+documents.onDidOpen(event => {
+	connection.console.log(`File Open / Tab switching occured`);
+	latestChangesInTextDoc = event.document
+	sketch.build(event.document)
+	diagnostics.checkForRealtimeDiagnostics(event.document)
+});
+
 documents.onDidClose(e => {
+	connection.console.log(`File Closed`);
 	documentSettings.delete(e.document.uri);
 });
 
-export let latestChangesInTextDoc: TextDocument
+let bufferInProgress = false
 
-//ToDo setup Log
 documents.onDidChangeContent(change => {
-	//validate sketch
+	connection.console.log(`Content changed`);
+	latestChangesInTextDoc = change.document
+	if(!bufferInProgress)
+		initPreProcessDiagnostics()
 });
 
- 
+
+async function initPreProcessDiagnostics() {
+	bufferInProgress = true
+	await sleep(300);
+	sketch.build(latestChangesInTextDoc)
+	diagnostics.checkForRealtimeDiagnostics(latestChangesInTextDoc)
+	bufferInProgress = false
+}
+
+function sleep(ms: number) {
+	return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 connection.onDidChangeWatchedFiles(_change => {
-	
-	connection.console.log('We received a file change event');
+	connection.console.log('Files in workspace have changed');
+
+	for (let i = 0; i < _change.changes.length; i++) {
+		const change = _change.changes[i];
+		
+		switch (change.type) {
+		  case FileChangeType.Created:
+			sketch.addTab(change.uri)
+			break;
+		  case FileChangeType.Deleted:
+			sketch.removeTab(change.uri)
+			break;
+		  default:
+			// do nothing
+			break;
+		}
+	}
 });
 
-
-//perform auto completion
-// connection.onCompletion(
-// 	(_textDocumentParams: CompletionParams): CompletionItem[] => {
-// 		return completion.decideCompletionMethods(_textDocumentParams, latestChangesInTextDoc)
+// Implementation for `goto definition` goes here
+// connection.onDefinition(
+// 	(_textDocumentParams: TextDocumentPositionParams): Definition | null => {
+// 		return definition.scheduleLookUpDefinition(_textDocumentParams.textDocument.uri,_textDocumentParams.position.line,_textDocumentParams.position.character)
 // 	}
-// );
+// )
 
+// Implementation for finding references
+// connection.onReferences(
+// 	(_referenceParams: ReferenceParams): Location[] | null => {
+// 		// _referenceParams.position.line, _referenceParams.position.character -> lineNumber, column from the arguments sent along with the command in the code lens
+// 		return reference.scheduleLookUpReference(_referenceParams)
+// 	}
+// )
+
+// Refresh codeLens for every change in the input stream
+// // Implementation of `code-lens` goes here
+// connection.onCodeLens(
+// 	(_codeLensParams: CodeLensParams): CodeLens[] | null => {
+// 		// return lens.scheduleLookUpLens(_codeLensParams)
+// 		return null
+// 	}
+// )
+
+// Implementation for Renaming References - WIP
+// connection.onRenameRequest(
+// 	(_renameParams: RenameParams): WorkspaceEdit | null => {
+// 		return null
+// 	}
+// )
+
+//Perform auto-completion -> Deligated tp `completion.ts`
+connection.onCompletion(
+	(_textDocumentParams: CompletionParams): CompletionItem[] => {
+		return completion.getCompletionMethods(_textDocumentParams, latestChangesInTextDoc)
+	}
+);
+
+// Completion Resolved suspended for now -> TODO: Refactoring required with real data points
 // connection.onCompletionResolve(
 // 	(item: CompletionItem): CompletionItem => {
-// 	// item.detail:"",
-// 	// item.documentation:""
-// 	// return item;
-	
-// 	return {};
+// 		// use `item.label`
+// 		item.detail = 'Field Details';
+// 		item.documentation = 'Hover to know Field Details';
+// 		return item;
 // 	}
 // );
 
-//ToDo: On hover
+// Implementation for Hover request
+// connection.onHover(
+// 	(params: TextDocumentPositionParams): Hover | null => {
+// 		let hoverResult: Hover | null = null
+// 		if(sketch.getCompileErrors.length == 0){
+// 			hoverResult = hover.scheduleHover(params)
+// 		} else {
+// 			sketch.getCompileErrors().forEach(function(compileError){
+// 				let errorLine = compileError.lineNumber
+// 				hoverResult = hover.scheduleHover(params, errorLine)
+// 			})
+// 		}
+// 		// log.write(`Hover Invoked`);
+// 		return hoverResult
+// 	}
+// )
 
 documents.listen(connection);
-
 connection.listen();
