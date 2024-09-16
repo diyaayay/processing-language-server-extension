@@ -10,6 +10,8 @@ import { getCharacterOffset,
 		 lineMap } from './sketch';
 import { TOP_LEVEL_KEYWORDS } from './grammar/terms/javaSpecific';
 import { Definition } from "vscode-languageserver";
+import { connect } from 'http2';
+import { connection } from './server';
 
 let foundDeclaration: [string,string,number,number][] = new Array();
 let _foundDeclarationCount = 0;
@@ -62,12 +64,12 @@ export function scheduleLookUpDefinition(receivedUri: string, lineNumber: number
 						uri: docUri,
 						range:{
 							start: {
-								line: diffLine-1,
-								character: declarationName[3] - charOffset
+								line: diffLine,
+								character: declarationName[3] - charOffset -1
 							},
 							end: {
-								line: diffLine-1,
-								character: declarationName[3] + word[0].length - charOffset
+								line: diffLine,
+								character: declarationName[3] + word[0].length - charOffset -1
 							}
 						}
 					}
