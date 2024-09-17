@@ -1,9 +1,9 @@
-import { Hover, MarkedString, TextDocumentPositionParams } from "vscode-languageserver";
 import { connection } from './server';
-import { error } from 'console';
 import { getTabContent, lineMap } from './sketch';
+
 const path = require("path");
 const fs = require("fs");
+import { Hover, MarkedString, TextDocumentPositionParams } from "vscode-languageserver";
 
 
 //Insights for keywords

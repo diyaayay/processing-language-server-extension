@@ -1,6 +1,3 @@
-import { ClassDeclarationContext, 
-	     VariableDeclaratorIdContext,
-		 MethodDeclarationContext } from "java-ast/dist/parser/JavaParser"
 import { getCharacterOffset,
 	     getInfo,
 		 getLineOffset, 
@@ -10,8 +7,10 @@ import { getCharacterOffset,
 		 lineMap } from './sketch';
 import { TOP_LEVEL_KEYWORDS } from './grammar/terms/javaSpecific';
 import { Definition } from "vscode-languageserver";
-import { connect } from 'http2';
-import { connection } from './server';
+import { ClassDeclarationContext,
+	     VariableDeclaratorIdContext,
+	     MethodDeclarationContext } from "java-ast/dist/parser/JavaParser";
+
 
 let foundDeclaration: [string,string,number,number][] = new Array();
 let _foundDeclarationCount = 0;

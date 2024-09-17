@@ -1,67 +1,119 @@
-import { ParseTree } from "antlr4ts/tree/ParseTree";
-import { spawn } from "child_process";
-import { readFileSync } from "fs";
-import * as antlr4ts from "antlr4ts";
-import * as JavaLexer from "java-ast/dist/parser/JavaLexer";
-import * as JavaParser from "java-ast/dist/parser/JavaParser";
+
+
+const childProcess = require('child_process');
+const fs = require('fs')
+const antlr4ts_1 = require("antlr4ts");
+const JavaLexer_1 = require("java-ast/dist/parser/JavaLexer");
+const JavaParser_1 = require("java-ast/dist/parser/JavaParser");
+import { ParseTree } from 'antlr4ts/tree/ParseTree'
 
 /**
- * Create AST
+ * Parses code to create a AST
  * 
- * @param processedText
- * @returns Parse Tree
+ * @param processedText code to generate a parsetree from
+ * @returns Parse tree
  */
 export function parseAST(processedText: string) : [ParseTree, ParseTree][] {
-	let ast=parse(processedText);
-	let tokenArray:[ParseTree, ParseTree][] =new Array();
-	let _tokenCounter = -1;
-
-	if(ast)
-	for(let i=0; i<ast.childCount; i++) {
-		extractTokens(ast.children![i]);
+	let ast = parse(processedText)
+	let tokenArray: [ParseTree, ParseTree][] = new Array();
+	let _tokenCounter = -1
+	
+	for(let i = 0; i < ast.childCount; i++){
+		extractTokens(ast.children![i])
 	}
 
-	function extractTokens(token: ParseTree){
-		for(let j = 0; j < token.childCount; j++){
-			if(token.getChild(j).childCount == 0){
+
+	return tokenArray
+
+	function extractTokens(gotOne: ParseTree){
+		for(let j = 0; j < gotOne.childCount; j++){
+			if(gotOne.getChild(j).childCount == 0){
 				_tokenCounter +=1
-				tokenArray[_tokenCounter] = [token.getChild(j), token]
+				tokenArray[_tokenCounter] = [gotOne.getChild(j),gotOne]
 			}
-			extractTokens(token.getChild(j));
+			extractTokens(gotOne.getChild(j))
 		}
-	}
-	//parseTreeConstructed
-	return tokenArray;
-}
-
-
-
-function parse(source : string) {
-	let originalCode = console;
-	try {
-		console = redirectConsole(console);
-		const chars = antlr4ts.CharStreams.fromString(source);
-		const lexer = new JavaLexer.JavaLexer(chars);
-		//extends BufferedTokenStream with functionality to filter token streams to tokens on a particular channel
-		const tokens = new antlr4ts.CommonTokenStream(lexer);
-		const parser = new JavaParser.JavaParser(tokens);
-		const compilationUnit = parser.compilationUnit();
-		console = originalCode;
-		return compilationUnit
-	}catch(e) {
-		console=originalCode;
-		//parsing failed
 	}
 }
 
-function redirectConsole(obj: any){
-	return new Proxy(obj, {
-		get(target, methodName, receiver) {
-			//not sure of the type, will fix later
-			const originMethod = target[methodName];
+/**
+ * Parses a line to extract each word and 
+ * its start- and endPos within the parsed line
+ * 
+ * @param line Line to be mapped
+ * @returns [word, startPos, endPos][]
+ */
+export function lineMap(line: string) : [string, number, number][]{
+	let currentTempAST: [ParseTree][] = new Array()
+	let tempCounter = -1
 
-			return function(...args : any) {};
-		}
+	//Extract tokens
+	let currentTokens = parse(line)
+	for (let i = 0; i < currentTokens.childCount; i++) {
+		currentLineASTExtract(currentTokens.children![i])
+	}
+
+	let map : [string, number, number][] = new Array()
+	let mapCount = 0
+	//Cook map
+	currentTempAST.forEach(function(word) {
+		map[mapCount] = [word[0].text, line.indexOf(word[0].text), line.indexOf(word[0].text) + word[0].text.length]
+		mapCount += 1
 	})
 
+	return map
+
+	function currentLineASTExtract(gotOne: ParseTree){
+		tempCounter += 1
+		currentTempAST[tempCounter] = [gotOne]
+		for(let j=0;j<gotOne.childCount;j++){
+			currentLineASTExtract(gotOne.getChild(j))
+		}
+	}
+}
+
+/**
+ * "Overide" function for java-ast parser. Mutes the false errors during parsing.
+ * 
+ * @param source string to be parsed
+ * @returns Compilation unit
+ */
+function parse(source : string) {
+	let consoleOriginal = console
+	try {
+	console = redirectConsole(console)
+    const chars = new antlr4ts_1.ANTLRInputStream(source);
+    const lexer = new JavaLexer_1.JavaLexer(chars);
+    const tokens = new antlr4ts_1.CommonTokenStream(lexer);
+    const parser = new JavaParser_1.JavaParser(tokens);
+	const compilationUnit = parser.compilationUnit();
+	console = consoleOriginal
+    return compilationUnit
+
+	}
+	catch(e){
+		console = consoleOriginal
+
+	}
+}
+
+/**
+ * Redirects console output. Is needed to have no output during parsing @see parse 
+ * Not the niced thing but the only way i could think of. 
+ * An issue (#44) is opend to clean this up
+ * 
+ * @param obj console instance
+ * @returns mutated console
+ */
+function redirectConsole(obj : any)
+{
+    return new Proxy(obj, {
+        get(target, methodName, receiver) {
+            // get origin method
+            const originMethod = target[methodName];
+
+            return function(...args : any) {
+			};
+        }
+    });
 }
