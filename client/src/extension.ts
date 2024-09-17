@@ -1,6 +1,6 @@
 import * as path from 'path';
-import { workspace, ExtensionContext } from 'vscode';
-import { SketchRunner } from "./sketchRunner"; // TBD
+import * as vscode from 'vscode';
+import { SketchRunner } from "./sketchRunner";
 
 import {
 	LanguageClient,
@@ -11,14 +11,15 @@ import {
 
 let client: LanguageClient;
 
-export function activate(context: ExtensionContext) {
-	const serverModule = context.asAbsolutePath(
+export function activate(context: vscode.ExtensionContext) {
+	
+	let serverModule = context.asAbsolutePath(
 		path.join('server', 'out', 'server.js')
 	);
-
+	
 	let debugOptions = { execArgv: ['--nolazy', '--inspect=6009'] };
 
-	const serverOptions: ServerOptions = {
+	let serverOptions: ServerOptions = {
 		run: { module: serverModule, transport: TransportKind.ipc },
 		debug: {
 			module: serverModule,
@@ -27,10 +28,11 @@ export function activate(context: ExtensionContext) {
 		}
 	};
 
-	const clientOptions: LanguageClientOptions = {
-		documentSelector: [{ scheme: 'file', language: 'plaintext' }],
+	
+	let clientOptions: LanguageClientOptions = {
+		documentSelector: [{ scheme: 'file', language: 'Processing' }],
 		synchronize: {
-			fileEvents: workspace.createFileSystemWatcher('**/*')
+			fileEvents: vscode.workspace.createFileSystemWatcher('**/*')
 		}
 	};
 
@@ -41,23 +43,35 @@ export function activate(context: ExtensionContext) {
 		clientOptions
 	);
 
-	//processign specific paths
-let clientPath = context.asAbsolutePath(path.join('client'));
-let serverPath = context.asAbsolutePath(path.join('server'));
-let jrePath = context.asAbsolutePath(path.join('jre', 'bin'));
+	let clientPath = context.asAbsolutePath(path.join('client'))
+	let serverPath = context.asAbsolutePath(path.join('server'))
+	let jrePath = context.asAbsolutePath(path.join('jre', 'bin'))
 
+	let serverCompilePath = path.join(serverPath, 'out', 'compile')
+	let clientSketchPath = path.join(clientPath, 'out', 'class')
 
-let serverCompilePath = path.join(serverPath, 'out', 'compile')
-let clientSketchPath = path.join(clientPath, 'out', 'class')
+	const sketchRunner = SketchRunner.getInstance();
+	sketchRunner.initilize(jrePath, clientSketchPath, serverCompilePath)
 
-//Setup instance from sketchRunner(TODO)
+	let sketchRunnerDisp = vscode.commands.registerCommand("extension.processing.runSketch", () => sketchRunner.runSketch())
+	let sketchStopperDisp = vscode.commands.registerCommand("extension.processing.stopSketch", () => sketchRunner.stopSketch())
+
+	let referenceDisposable = vscode.commands.registerCommand('processing.command.findReferences', (...args: any[]) => {
+		vscode.commands.executeCommand('editor.action.findReferences', vscode.Uri.file(args[0].uri.substring(7,args[0].uri.length)), new vscode.Position(args[0].lineNumber,args[0].column));
+	})
+
+	context.subscriptions.push(referenceDisposable)
+	context.subscriptions.push(sketchRunnerDisp)
+	context.subscriptions.push(sketchStopperDisp)
 
 	client.start();
 }
 
-export function deactivate(): Thenable<void> | undefined {
-	if (!client) {
+export async function deactivate(): Promise<void> | undefined {
+		if (!client) {
 		return undefined;
 	}
+	const sketchRunner = SketchRunner.getInstance();
+	await sketchRunner.stopSketch();
 	return client.stop();
 }

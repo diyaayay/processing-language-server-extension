@@ -1,8 +1,14 @@
+import { checkForRealtimeDiagnostics } from './diagnostics';
+import { getCompletionMethods } from './completion';
+import { onHoverinFile } from './hover';
+import { scheduleLookUpDefinition } from './definition';
+import { scheduleLookUpReference } from './references';
+import { addTab, build, getCompileErrors, removeTab } from './sketch';
+
+import { TextDocument } from 'vscode-languageserver-textdocument';
 import {
 	createConnection,
 	TextDocuments,
-	Diagnostic,
-	DiagnosticSeverity,
 	ProposedFeatures,
 	InitializeParams,
 	DidChangeConfigurationNotification,
@@ -10,9 +16,9 @@ import {
 	CompletionParams,
 	TextDocumentPositionParams,
 	Definition,
-	Location,
 	CodeLens,
 	CodeLensParams,
+	Location,
 	WorkspaceEdit,
 	FileChangeType,
 	TextDocumentSyncKind,
@@ -21,22 +27,10 @@ import {
 	Hover,
 	ReferenceParams
 } from 'vscode-languageserver/node';
-import * as sketch from './sketch';
-import {
-	TextDocument
-} from 'vscode-languageserver-textdocument';
-import * as diagnostics from './diagnostics';
-import * as completion from './completion';
-import * as hover from "./hover";
-import * as definition from "./definition";
-import * as reference from"./references";
-
 
 export let connection = createConnection(ProposedFeatures.all);
 
 
-
-// let documents: TextDocuments = new TextDocuments();
 const documents: TextDocuments<TextDocument> = new TextDocuments(TextDocument);
 
 let hasConfigurationCapability: boolean = false;
@@ -71,9 +65,6 @@ connection.onInitialize((params: InitializeParams) => {
 					},
 					hoverProvider: true,
 					definitionProvider : true,
-					// codeLensProvider : {
-					// 	resolveProvider: true
-					// },
 					referencesProvider: true,
 					renameProvider: true
 				}
@@ -119,7 +110,7 @@ connection.onDidChangeConfiguration(change => {
 		);
 	}
 
-	documents.all().forEach(diagnostics.checkForRealtimeDiagnostics);
+	documents.all().forEach(checkForRealtimeDiagnostics);
 });
 
 export function getDocumentSettings(resource: string): Thenable<ExampleSettings> {
@@ -137,13 +128,13 @@ export function getDocumentSettings(resource: string): Thenable<ExampleSettings>
 	return result;
 }
 
-export let latestChangesInTextDoc: TextDocument
+export let latestChangesInTextDoc: TextDocument;
 
 documents.onDidOpen(event => {
 	connection.console.log(`File Open / Tab switching occured`);
-	latestChangesInTextDoc = event.document
-	sketch.build(event.document)
-	diagnostics.checkForRealtimeDiagnostics(event.document)
+	latestChangesInTextDoc = event.document;
+	build(event.document);
+	checkForRealtimeDiagnostics(event.document);
 });
 
 documents.onDidClose(e => {
@@ -162,11 +153,11 @@ documents.onDidChangeContent(change => {
 
 
 async function initPreProcessDiagnostics() {
-	bufferInProgress = true
+	bufferInProgress = true;
 	await sleep(300);
-	sketch.build(latestChangesInTextDoc)
-	diagnostics.checkForRealtimeDiagnostics(latestChangesInTextDoc)
-	bufferInProgress = false
+	build(latestChangesInTextDoc);
+	checkForRealtimeDiagnostics(latestChangesInTextDoc);
+	bufferInProgress = false;
 }
 
 function sleep(ms: number) {
@@ -181,80 +172,69 @@ connection.onDidChangeWatchedFiles(_change => {
 		
 		switch (change.type) {
 		  case FileChangeType.Created:
-			sketch.addTab(change.uri)
+			addTab(change.uri)
 			break;
 		  case FileChangeType.Deleted:
-			sketch.removeTab(change.uri)
+			removeTab(change.uri)
 			break;
 		  default:
-			// do nothing
 			break;
 		}
 	}
 });
 
-//Implementation for `goto definition` goes here
 connection.onDefinition(
 	(_textDocumentParams: TextDocumentPositionParams): Definition | null => {
-		return definition.scheduleLookUpDefinition(_textDocumentParams.textDocument.uri,_textDocumentParams.position.line,_textDocumentParams.position.character)
+		return scheduleLookUpDefinition(_textDocumentParams.textDocument.uri,_textDocumentParams.position.line,_textDocumentParams.position.character)
 	}
 )
 
-//Implementation for finding references
+connection.onCodeLens(
+	(
+		_codeParams: CodeLensParams): CodeLens[] | null => {
+			return null;
+		}
+	)
+
+	connection.onRenameRequest(
+		(_renameParams: RenameParams): WorkspaceEdit | null => {
+			return null
+		}
+	)
+
 connection.onReferences(
 	(_referenceParams: ReferenceParams): Location[] | null => {
-		// _referenceParams.position.line, _referenceParams.position.character -> lineNumber, column from the arguments sent along with the command in the code lens
-		return reference.scheduleLookUpReference(_referenceParams)
+		return scheduleLookUpReference(_referenceParams)
 	}
 )
 
-// Refresh codeLens for every change in the input stream
-// // Implementation of `code-lens` goes here
-// connection.onCodeLens(
-// 	(_codeLensParams: CodeLensParams): CodeLens[] | null => {
-// 		// return lens.scheduleLookUpLens(_codeLensParams)
-// 		return null
-// 	}
-// )
-
-// Implementation for Renaming References - WIP
-// connection.onRenameRequest(
-// 	(_renameParams: RenameParams): WorkspaceEdit | null => {
-// 		return null
-// 	}
-// )
-
-//Perform auto-completion -> Deligated tp `completion.ts`
 connection.onCompletion(
 	(_textDocumentParams: CompletionParams): CompletionItem[] => {
-		return completion.getCompletionMethods(_textDocumentParams, latestChangesInTextDoc)
+		return getCompletionMethods(_textDocumentParams, latestChangesInTextDoc)
 	}
 );
 
-// Completion Resolved suspended for now -> TODO: Refactoring required with real data points
-// connection.onCompletionResolve(
-// 	(item: CompletionItem): CompletionItem => {
-// 		// use `item.label`
-// 		item.detail = 'Field Details';
-// 		item.documentation = 'Hover to know Field Details';
-// 		return item;
-// 	}
-// );
+connection.onCompletionResolve(
+	(item: CompletionItem): CompletionItem => {
+		item.detail = 'Field Details';
+		item.documentation = 'Hover to know Field Details';
+		return item;
+	}
+);
 
 connection.onHover(
 	(params: TextDocumentPositionParams): Hover | null => {
 		let hoverResult: Hover | null = null;
-		hoverResult = hover.onHoverinFile(params);
-		if(sketch.getCompileErrors.length == 0){
-			hoverResult = hover.onHoverinFile(params);
+		hoverResult = onHoverinFile(params);
+		if(getCompileErrors.length == 0){
+			hoverResult = onHoverinFile(params);
 		} else {
-			sketch.getCompileErrors().forEach(function(compileError){
-				let errorLine = compileError.lineNumber
-				hoverResult = hover.onHoverinFile(params, errorLine);
+			getCompileErrors().forEach(function(compileError){
+				let errorLine = compileError.lineNumber;
+				hoverResult = onHoverinFile(params, errorLine);
 			})
 		}
-		// log.write(`Hover Invoked`);
-		return hoverResult
+		return hoverResult;
 	}
 )
 

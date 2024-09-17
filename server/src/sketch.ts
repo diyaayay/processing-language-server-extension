@@ -5,7 +5,7 @@ import * as preprocessor from "./preprocessing";
 import { ParseTree } from "antlr4ts/tree/ParseTree";
 import { connect } from "http2";
 import { connection } from "./server";
-
+import { TextDocument } from 'vscode-languageserver-textdocument';
 const fs = require("fs")
 const pathM = require("path");
 const child_process = require("child_process");
@@ -44,7 +44,7 @@ export interface CompileError{
  * @param textDocument  .pde file(tab) 
  * @returns 
  */
-export function initialize(textDocument: lsp.TextDocument) {
+export function initialize(textDocument: TextDocument) {
 	
 	let uri = pathM.dirname(textDocument.uri)+'/';
 	let path = getPathFromUri(uri);
@@ -55,6 +55,7 @@ export function initialize(textDocument: lsp.TextDocument) {
 		name : name
 	};
 	jrePath = `${__dirname.substring(0,__dirname.length-11)}/jre/bin`;
+	connection.console.log(jrePath);
 
 	try {
 		let mainFileName = sketchInfo.name + ".pde";
@@ -70,7 +71,7 @@ export function initialize(textDocument: lsp.TextDocument) {
 	try{
 		let fileNames = fs.readdirSync(sketchInfo.path);
 		fileNames.forEach((fileName : string) =>{
-			if (fileName.endsWith(".pde") && !fileName.includes(sketchInfo.name)){
+			if (fileName.endsWith(".pde")){
 				let tabContents = fs.readFileSync(sketchInfo.path+fileName, "utf-8");
 				contents.set(fileName, tabContents)
 			}
@@ -89,12 +90,12 @@ export function initialize(textDocument: lsp.TextDocument) {
  * Builds the java sketch
  * @param textDocument 
  */
-export function build(textDocument: lsp.TextDocument){
+export function build(textDocument: TextDocument){
 	if (!initialized) {
 		initialize(textDocument);
 	}
 
-	updateContent(textDocument)
+	updateContent(textDocument);
 	unProcessedCode = getContent();
 	processedCode = preprocessor.performPreProcessing(unProcessedCode);
 	tokenArray = parser.parseAST(processedCode);
@@ -117,7 +118,7 @@ export function build(textDocument: lsp.TextDocument){
  * @param changedDocument Document of which the content should be updated
  * @returns Update succes state
  */
-export function updateContent(changedDocument: lsp.TextDocument) {
+export function updateContent(changedDocument: TextDocument) {
 
 	if (!initialized) {
 		return false;
@@ -301,6 +302,7 @@ export function getTokenArray() : [ParseTree, ParseTree][]{
  * @returns Array of all compile errors
  */
 export function getCompileErrors() : CompileError[]{
+	
 	return compileErrors;
 }
 
@@ -358,8 +360,8 @@ function compile(processedCode: string){
 function getCompilationErrors(pwd: string){
 	// If one error is fixed it's not popped from stack - check
 	try {  
-		compileErrors = new Array()
-		let data = fs.readFileSync(`${__dirname}/compile/error.txt`, "utf-8");
+		compileErrors = new Array();
+		let data = fs.readFileSync(`${__dirname}/compile/error.txt`, 'utf-8');
 		if(data == ''){
 			// No Error on Compilation
 			connection.console.log("No error on compilation");

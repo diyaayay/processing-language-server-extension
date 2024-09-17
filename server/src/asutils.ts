@@ -1,6 +1,6 @@
 import { ParseTree } from "antlr4ts/tree/ParseTree";
 import { connect } from 'http2';
-import { ClassDeclarationContext, VariableDeclaratorContext, MethodDeclarationContext } from "java-ast";
+import { ClassDeclarationContext, VariableDeclaratorContext, MethodDeclarationContext } from "java-ast/dist/parser/JavaParser";
 import { connection } from './server';
 
 export let memberNames: string[] = [];

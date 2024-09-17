@@ -1,4 +1,3 @@
-import { Location, ReferenceParams } from "vscode-languageserver";
 import { getCharacterOffset,
 	     getInfo,
 		 getLineOffset,
@@ -6,6 +5,9 @@ import { getCharacterOffset,
 		 getTokenArray,
 		 getTransformationMap,
 		 lineMap } from "./sketch";
+
+import { Location, ReferenceParams } from "vscode-languageserver";
+
 
 export function scheduleLookUpReference(_referenceParams: ReferenceParams): Location[] | null{
 	let resultant: Location[] | null;
