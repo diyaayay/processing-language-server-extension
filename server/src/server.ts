@@ -18,7 +18,8 @@ import {
 	TextDocumentSyncKind,
 	RenameParams,
 	InitializeResult,
-	Hover
+	Hover,
+	ReferenceParams
 } from 'vscode-languageserver/node';
 import * as sketch from './sketch';
 import {
@@ -28,6 +29,7 @@ import * as diagnostics from './diagnostics';
 import * as completion from './completion';
 import * as hover from "./hover";
 import * as definition from "./definition";
+import * as reference from"./references";
 
 
 export let connection = createConnection(ProposedFeatures.all);
@@ -198,13 +200,13 @@ connection.onDefinition(
 	}
 )
 
-// Implementation for finding references
-// connection.onReferences(
-// 	(_referenceParams: ReferenceParams): Location[] | null => {
-// 		// _referenceParams.position.line, _referenceParams.position.character -> lineNumber, column from the arguments sent along with the command in the code lens
-// 		return reference.scheduleLookUpReference(_referenceParams)
-// 	}
-// )
+//Implementation for finding references
+connection.onReferences(
+	(_referenceParams: ReferenceParams): Location[] | null => {
+		// _referenceParams.position.line, _referenceParams.position.character -> lineNumber, column from the arguments sent along with the command in the code lens
+		return reference.scheduleLookUpReference(_referenceParams)
+	}
+)
 
 // Refresh codeLens for every change in the input stream
 // // Implementation of `code-lens` goes here
