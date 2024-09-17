@@ -7,10 +7,13 @@
 ## Capabilitites:
 
 ### On-Hover description
-![](./assets/fileicons/2024-09-16%2018-05-15.gif)
+![](./assets/fileicons/hover.gif)
 
 ### Go-To-Definition
-![](./assets/fileicons/2024-09-16%2018-03-24.gif)
+![](./assets/fileicons/gotoDef.gif)
+
+### Go-To-References
+![](./assets/fileicons/gotoref.gif)
 
 ### Code-Completion
 ![](./assets//fileicons/2024-09-16%2018-06-18.gif)
