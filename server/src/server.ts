@@ -9,8 +9,6 @@ import { TextDocument } from 'vscode-languageserver-textdocument';
 import {
 	createConnection,
 	TextDocuments,
-	Diagnostic,
-	DiagnosticSeverity,
 	ProposedFeatures,
 	InitializeParams,
 	DidChangeConfigurationNotification,
@@ -19,8 +17,6 @@ import {
 	TextDocumentPositionParams,
 	Definition,
 	Location,
-	CodeLens,
-	CodeLensParams,
 	WorkspaceEdit,
 	FileChangeType,
 	TextDocumentSyncKind,
