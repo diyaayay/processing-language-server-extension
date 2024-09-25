@@ -24,9 +24,10 @@
 
 ### Setup
 
-```
+```sh
 git clone https://github.com/diyaayay/processing-language-server-extension.git
 cd processing-language-server-extension/
+Run the script `dependency.bat` through any terminal (e.g., in Windows Powershell, run `.\dependency.bat`)
 npm install
 npm run watch
 ```
