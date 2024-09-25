@@ -31,7 +31,7 @@ export class SketchRunner implements vscode.Disposable {
 		this._compilePath = compilerPath;
 		this._outputChannel = vscode.window.createOutputChannel(SketchRunner.NAME);
 		this._bufferedOutputChannel = new BufferedOutputChannel(this._outputChannel.append, 300);
-		this._binPath = path.resolve("binary");
+		this._binPath = path.resolve("..", "..", "jre", "bin");
 
 	}
 
