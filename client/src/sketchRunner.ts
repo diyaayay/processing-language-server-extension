@@ -86,19 +86,7 @@ export class SketchRunner implements vscode.Disposable {
             }
     
             return new Promise((resolve, reject) => {
-                const editor = vscode.window.activeTextEditor;
-                if (!editor) {
-                    // this.logError('No active editor found. Please open a sketch file.');
-                    return false; 
-                }
-                const currentFilePath = editor.document.uri.fsPath; 
-                const sketchDirectory = path.dirname(currentFilePath);
-
-                const sketchPath =  path.resolve(sketchDirectory);
-                
-
-                
-                    
+                const sketchPath =  path.resolve(__dirname, "..", "..", "SKECHERS");
                 const processingJavaPath = path.join(this._jrePath, "processing-sketch.exe");
                 this._child = spawn(processingJavaPath, ["--sketch=" + sketchPath, "--run"], { cwd: this._workDir });
     
