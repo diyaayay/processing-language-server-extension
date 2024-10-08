@@ -16,6 +16,8 @@ import {
 	CompletionParams,
 	TextDocumentPositionParams,
 	Definition,
+	CodeLens,
+	CodeLensParams,
 	Location,
 	WorkspaceEdit,
 	FileChangeType,
@@ -186,6 +188,19 @@ connection.onDefinition(
 		return scheduleLookUpDefinition(_textDocumentParams.textDocument.uri,_textDocumentParams.position.line,_textDocumentParams.position.character)
 	}
 )
+
+connection.onCodeLens(
+	(
+		_codeParams: CodeLensParams): CodeLens[] | null => {
+			return null;
+		}
+	)
+
+	connection.onRenameRequest(
+		(_renameParams: RenameParams): WorkspaceEdit | null => {
+			return null
+		}
+	)
 
 connection.onReferences(
 	(_referenceParams: ReferenceParams): Location[] | null => {
