@@ -1,2 +1,0 @@
-JAVA_VERSION="17.0.2"
-MODULES="java.base java.datatransfer java.xml java.prefs java.desktop java.management java.logging java.transaction.xa java.sql java.compiler jdk.compiler jdk.zipfs compilerModule gluegen.rt jogl.all core"
