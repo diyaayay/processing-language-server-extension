@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<root>
+
+<name>str()</name>
+
+<category>Data</category>
+
+<subcategory>Conversion</subcategory>
+
+<example>
+<image></image>
+<code><![CDATA[
+boolean b = false;
+byte y = -28;
+char c = 'R';
+float f = -32.6;
+int i = 1024;
+
+String sb = str(b);
+String sy = str(y); 
+String sc = str(c);
+String sf = str(f);
+String si = str(i);
+
+sb = sb + sy + sc + sf + si;
+
+println(sb);  // Prints 'false-28R-32.61024'
+]]></code>
+</example>
+
+<description><![CDATA[
+Converts a value of a primitive data type (<b>boolean</b>, <b>byte</b>, <b>char</b>, <b>int</b>, or <b>float</b>) to its <b>String</b> representation. For example, converting an integer with <b>str(3)</b> will return the <b>String</b> value of <b>"3"</b>, converting a float with <b>str(-12.6)</b> will return <b>"-12.6"</b>, and converting a boolean with <b>str(true)</b> will return <b>"true"</b>.<br />
+<br />
+When an array of values is passed in, then a <b>String</b> array of the same length is returned.
+]]></description>
+
+</root>

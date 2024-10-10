@@ -1,0 +1,7 @@
+Welkom to the compiler module for the languages server for processing (LS4P)
+Usage: <options>
+Where possible options include:
+-f  <path> file to compile
+-cp <path> User added class files (imports). This can be a file or a directory
+-h         This help text
+

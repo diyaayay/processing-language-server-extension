@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<root>
+
+<name>getChildren()</name>
+
+<category>XMLElement</category>
+
+<subcategory>Method</subcategory>
+
+<type></type>
+
+<example>
+<image></image>
+<code><![CDATA[
+// The following short XML file called "mammals.xml" is parsed 
+// in the code below. It must be in the project's "data" folder.
+//
+// &lt;?xml version=&quot;1.0&quot;?&gt;
+// &lt;mammals&gt;
+//   &lt;animal id=&quot;0&quot; species=&quot;Capra hircus&quot;&gt;Goat&lt;/animal&gt;
+//   &lt;animal id=&quot;1&quot; species=&quot;Panthera pardus&quot;&gt;Leopard&lt;/animal&gt;
+//   &lt;animal id=&quot;2&quot; species=&quot;Equus zebra&quot;&gt;Zebra&lt;/animal&gt;
+// &lt;/mammals&gt;
+
+XML xml;
+
+void setup() {
+  xml = loadXML("mammals.xml");
+  XML[] animals = xml.getChildren("animal");
+
+  for (int i = 0; i < animals.length; i++) {
+    println(animals[i].getContent());
+  }
+}
+
+// Sketch prints:
+// Goat
+// Leopard
+// Zebra
+]]></code>
+</example>
+
+<description><![CDATA[
+Returns all of the element's children as an array of XML objects. When the <b>name</b> parameter is specified, then it will return all children that match that name or path. The path is a series of elements and sub-elements, separated by slashes.
+]]></description>
+
+</root>

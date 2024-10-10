@@ -1,0 +1,1 @@
+{"version":3,"file":"model.js","sourceRoot":"","sources":["../../../src/grammar/terms/model.ts"],"names":[],"mappings":";AAAA,iCAAiC;;;AAMjC,0EAEC;AAID,gEAEC;AAVU,QAAA,0BAA0B,GAA8B,IAAI,KAAK,EAAE,CAAC;AAE/E,SAAgB,+BAA+B;IAC9C,kCAA0B,GAAG,EAAE,CAAC;AACjC,CAAC;AAEU,QAAA,2BAA2B,GAA4C,IAAI,KAAK,EAAE,CAAC;AAE9F,SAAgB,0BAA0B;IACzC,mCAA2B,GAAG,EAAE,CAAA;AACjC,CAAC"}

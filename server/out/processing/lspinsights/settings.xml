@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<root>
+<name>settings()</name>
+
+<category>Environment</category>
+
+<subcategory></subcategory>
+
+<type>p5function</type>
+
+<example>
+<image></image>
+<code><![CDATA[
+// Run code at full screen using the default renderer
+
+int x = 0;
+
+void settings() {
+  fullScreen();
+}
+
+void setup() {
+  background(0);
+  noStroke();
+  fill(102);
+}
+
+void draw() {
+  rect(x, height*0.2, 1, height*0.6); 
+  x = x + 2;
+}
+]]></code>
+</example>
+
+<example>
+<image></image>
+<code><![CDATA[
+// Run code at full screen using the P2D renderer
+// on screen 2 of a multiple monitor hardware setup
+
+int x = 0;
+
+void settings() {
+  fullScreen(P2D, 2);
+}
+
+void setup() {
+  background(0);
+  noStroke();
+  fill(102);
+}
+
+void draw() {
+  rect(x, height*0.2, 1, height*0.6); 
+  x = x + 2;
+}
+]]></code>
+</example>
+
+<example>
+<image></image>
+<code><![CDATA[
+// Run code at full screen using the P2D renderer
+// across all screens on a multiple monitor setup
+
+int x = 0;
+
+void settings() {
+  fullScreen(P2D, SPAN);
+}
+
+void setup() {
+  background(0);
+  noStroke();
+  fill(102);
+}
+
+void draw() {
+  rect(x, height*0.2, 1, height*0.6); 
+  x = x + 2;
+}
+]]></code>
+</example>
+
+<example>
+<image></image>
+<code><![CDATA[
+int w = 200;
+int h = 200;
+int x = 0;
+
+void settings() {
+  size(w, h);
+}
+
+void setup() {
+  background(0);
+  noStroke();
+  fill(102);
+}
+
+void draw() {
+  rect(x, 10, 1, 180); 
+  x = x + 2;
+}
+]]></code>
+</example>
+
+<description><![CDATA[
+The <b>settings()</b> function is new with Processing 3.0. It's not needed in most sketches. It's only useful when it's absolutely necessary to define the parameters to <b>size()</b> with a variable. Alternately, the <b>settings()</b> function is necessary when using Processing code outside of the Processing Development Environment (PDE). For example, when using the Eclipse code editor, it's necessary to use <b>settings()</b> to define the <b>size()</b> and <b>smooth()</b> values for a sketch.</b>.
+<br /> <br />
+The <b>settings()</b> method runs before the sketch has been set up, so other Processing functions cannot be used at that point. For instance, do not use loadImage() inside settings(). The settings() method runs "passively" to set a few variables, compared to the <b>setup()</b> command that call commands in the Processing API. 
+]]></description>
+
+</root>

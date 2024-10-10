@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<root>
+
+<name>Table</name>
+
+<category>Data</category>
+
+<subcategory>Composite</subcategory>
+
+<type></type>
+
+<example>
+<image></image>
+<code><![CDATA[
+Table table;
+
+void setup() {
+
+  table = new Table();
+  
+  table.addColumn("id");
+  table.addColumn("species");
+  table.addColumn("name");
+  
+  TableRow newRow = table.addRow();
+  newRow.setInt("id", table.lastRowIndex());
+  newRow.setString("species", "Panthera leo");
+  newRow.setString("name", "Lion");
+  
+  saveTable(table, "data/new.csv");
+}
+
+// Sketch saves the following to a file called "new.csv":
+// id,species,name
+// 0,Panthera leo,Lion
+]]></code>
+</example>
+
+<description><![CDATA[
+<b>Table</b> objects store data with multiple rows and columns, much like in a traditional spreadsheet.  Tables can be generated from scratch, dynamically, or using data from an existing file.  Tables can also be output and saved to disk, as in the example above.<br />
+<br />
+Additional <b>Table</b> methods are documented in the <a href="http://processing.github.io/processing-javadocs/core/processing/data/Table.html">Processing Table Javadoc</a>.
+
+]]></description>
+
+
+<type>class</type>
+
+</root>

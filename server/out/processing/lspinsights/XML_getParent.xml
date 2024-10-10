@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<root>
+
+<name>getParent()</name>
+
+<category>XMLElement</category>
+
+<subcategory>Method</subcategory>
+
+<type></type>
+
+<example>
+<image></image>
+<code><![CDATA[
+// The following short XML file called "mammals.xml" is parsed 
+// in the code below. It must be in the project's "data" folder.
+//
+// &lt;?xml version=&quot;1.0&quot;?&gt;
+// &lt;mammals&gt;
+//   &lt;animal id=&quot;0&quot; species=&quot;Capra hircus&quot;&gt;Goat&lt;/animal&gt;
+//   &lt;animal id=&quot;1&quot; species=&quot;Panthera pardus&quot;&gt;Leopard&lt;/animal&gt;
+//   &lt;animal id=&quot;2&quot; species=&quot;Equus zebra&quot;&gt;Zebra&lt;/animal&gt;
+// &lt;/mammals&gt;
+
+XML xml;
+
+void setup() {
+  xml = loadXML("mammals.xml");
+  XML[] children = xml.getChildren("animal");
+  XML parent = children[1].getParent();
+  println(parent.getName());
+}
+
+// Sketch prints:
+// mammals
+]]></code>
+</example>
+
+<description><![CDATA[
+Gets a copy of the element's parent.  Returns the parent as another XML object.
+]]></description>
+
+</root>

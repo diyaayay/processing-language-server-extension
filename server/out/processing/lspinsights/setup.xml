@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<root>
+<name>setup()</name>
+
+<category>Structure</category>
+
+<subcategory></subcategory>
+
+<type>p5function</type>
+
+<example>
+<image></image>
+<code><![CDATA[
+int x = 0;
+
+void setup() {
+  size(200, 200);
+  background(0);
+  noStroke();
+  fill(102);
+}
+
+void draw() {
+  rect(x, 10, 2, 80); 
+  x = x + 1;
+}
+]]></code>
+</example>
+
+<example>
+<image></image>
+<code><![CDATA[
+int x = 0;
+
+void setup() {
+  fullScreen();
+  background(0);
+  noStroke();
+  fill(102);
+}
+
+void draw() {
+  rect(x, height*0.2, 1, height*0.6); 
+  x = x + 2;
+}
+]]></code>
+</example>
+
+<description><![CDATA[
+The <b>setup()</b> function is run once, when the program starts. It's used to define initial enviroment properties such as screen size and to load media such as images and fonts as the program starts. There can only be one <b>setup()</b> function for each program and it shouldn't be called again after its initial execution.<br />
+<br />
+If the sketch is a different dimension than the default, the <b>size()</b> function or <b>fullScreen()</b> function must be the first line in <b>setup()</b>.<br />
+<br />
+Note: Variables declared within <b>setup()</b> are not accessible within other functions, including <b>draw()</b>.
+]]></description>
+
+</root>

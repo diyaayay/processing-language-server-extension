@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<root>
+<name>int()</name>
+
+<category>Data</category>
+
+<subcategory>Conversion</subcategory>
+
+<example>
+<image></image>
+<code><![CDATA[
+float f = 65.0;
+int i = int(f);
+println(f + " : " + i);  // Prints "65.0 : 65"
+
+char c = 'E';
+i = int(c);
+println(c + " : " + i);  // Prints "E : 69"
+]]></code>
+</example>
+
+<description><![CDATA[
+Converts any value of a primitive data type (<b>boolean</b>, <b>byte</b>, <b>char</b>, <b>color</b>, <b>float</b>, <b>int</b>, or <b>long</b>) to its integer representation.<br />
+<br />
+When an array of values is passed in, then an <b>int</b> array of the same length is returned.
+]]></description>
+
+</root>

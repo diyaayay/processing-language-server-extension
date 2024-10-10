@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<root>
+<name>char()</name>
+
+<category>Data</category>
+
+<subcategory>Conversion</subcategory>
+
+<example>
+<image></image>
+<code><![CDATA[
+int i = 65;
+char c = char(i);
+println(i + " : " + c);  // Prints "65 : A"
+
+byte b = 65;
+c = char(b);
+println(b + " : " + c);  // Prints "65 : A"
+]]></code>
+</example>
+
+<description><![CDATA[
+Converts any value of a primitive data type (<b>boolean</b>, <b>byte</b>, <b>char</b>, <b>color</b>, <b>double</b>, <b>float</b>, <b>int</b>, or <b>long</b>) to its numeric character representation.<br />
+<br />
+When an array of values is passed in, then a <b>char</b> array of the same length is returned.
+]]></description>
+
+</root>

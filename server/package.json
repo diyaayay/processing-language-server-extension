@@ -1,0 +1,22 @@
+{
+	"name": "lsp-sample-server",
+	"description": "Example implementation of a language server in node.",
+	"version": "1.0.0",
+	"author": "Microsoft Corporation",
+	"license": "GPL-3.0-only",
+	"engines": {
+		"node": "*"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Microsoft/vscode-extension-samples"
+	},
+	"dependencies": {
+		"java": "^0.14.0",
+		"rxjs": "^6.6.3",
+		"java-class-tools": "^1.3.1",
+		"vscode-languageserver": "^9.0.1",
+		"vscode-languageserver-textdocument": "^1.0.11"
+	},
+	"scripts": {}
+}

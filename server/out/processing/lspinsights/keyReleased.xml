@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<root>
+<name>keyReleased()</name>
+
+<category>Input</category>
+
+<subcategory>Keyboard</subcategory>
+
+<type>p5function</type>
+
+<example>
+<image></image>
+<code><![CDATA[
+// Click on the image to give it focus,
+// and then press any key.
+
+int value = 0;
+
+void draw() {
+  fill(value);
+  rect(25, 25, 50, 50);
+}
+
+void keyReleased() {
+  if (value == 0) {
+    value = 255;
+  } else {
+    value = 0;
+  }
+}
+]]></code>
+</example>
+
+<description><![CDATA[
+The <b>keyReleased()</b> function is called once every time a key is released. The key that was released will be stored in the <b>key</b> variable. See <b>key</b> and <b>keyCode</b> for more information.
+<br /><br />
+Mouse and keyboard events only work when a program has <b>draw()</b>. Without <b>draw()</b>, the code is only run once and then stops listening for events.
+]]></description>
+
+</root>

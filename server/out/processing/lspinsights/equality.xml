@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<root>
+<name>== (equality)</name>
+
+<category>Control</category>
+
+<subcategory>Relational Operators</subcategory>
+
+<usage>Web &amp; Application</usage>
+
+<example>
+<image></image>
+<code><![CDATA[
+int a = 23;
+int b = 23;
+if (a == b) {
+  println("the values of variables 'a' and 'b' are the same");
+}
+]]></code>
+</example>
+
+<description><![CDATA[
+Determines if two values are equivalent. Please note the equality operator (==) is different from the assignment operator (=) and although they look similar, they have a different use. If you're comparing two variables, the quality operator (==) only works with primitive data types like int, float, and char and not with composite data types like Array, Table, and PVector<br /> 
+<br />
+Note that when comparing String objects, you must use the <b>equals()</b> method instead of == to compare their contents. See the reference for String or the <a href="https://github.com/processing/processing/wiki/Troubleshooting#why-dont-these-strings-equal">troubleshooting</a> note for more explanation.
+]]></description>
+
+<syntax>
+<c>value1</c> == <c>value2</c>
+</syntax>
+
+<parameter>
+<label>value1</label>
+<description><![CDATA[int, float, char, byte, boolean]]></description>
+</parameter>
+
+<parameter>
+<label>value2</label>
+<description><![CDATA[int, float, char, byte, boolean]]></description>
+</parameter>
+
+<returns></returns>
+
+<related>
+&gt; (greater than)
+&lt; (less than)
+&gt;= (greater than or equal to)
+&lt;= (less than or equal to)
+!= (inequality)
+</related>
+
+<availability>1.0</availability>
+
+<type>Operator</type>
+
+<partof>PDE</partof>
+
+</root>
