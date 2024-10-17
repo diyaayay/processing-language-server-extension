@@ -11,29 +11,29 @@ The goal is to get something stable enough to release and get feedback from comm
 finding bugs, and hopefully contributing as soon
 as possible.
 
-- [ ] Stable architecture
+- [x] Stable architecture
   - [X] Integrate Processing Core
-  - [ ] Lexer & Parser (ANTLR)
+  - [x] Lexer & Parser (ANTLR)
   - [X] Get the sketch
   - [X] Run the sketch
-  - [X] No known Bugs
+  - [ ] No known Bugs
 
 - [ ] LSP Extension
   - [X] Setup Server
   - [X] Setup Client
   - [x] Grammar files
-  - [ ] Workspace management
-    - [ ] Sketch and SketchBook
-  - [ ] Code completion
-    - [ ] Keywords
-    - [ ] Examples
-  - [ ] Hover
-    - [ ] Keyword documentation hover
+  - [x] Workspace management
+    - [x] Sketch and SketchBook
+  - [x] Code completion
+    - [x] Keywords
+    - [x] Examples
+  - [x] Hover
+    - [x] Keyword documentation hover
   - [ ] Diagnostics
-    - [ ] Sketch Validation
-  - [ ] Go-to References
-  - [ ] Configuration
-    - [ ] Watch sketch file
+    - [x] Sketch Validation
+  - [x] Go-to References
+  - [x] Configuration
+    - [x] Watch sketch file
   - [ ] No known Bugs
 
 - [ ] Documentation
