@@ -17,10 +17,15 @@
 
 ### Code-Completion
 ![](./assets//fileicons/2024-09-16%2018-06-18.gif)
+
+### Linux distribution
+![](./assets//fileicons/image.png)
+
 ### Installation
 
 - [Node.js](https://nodejs.org/) (version 18 or higher)
 - [npm](https://www.npmjs.com/)
+
 
 ### Setup
 
@@ -32,11 +37,10 @@ npm install
 npm run watch
 ```
 
-Note: This project is under development, to test currently,open the `skechers.pde` under the `SKECHERS` directory inside the project's root and write your sketch within the file. Dynamic sketchfile paths functionality will be pushed soon.
+Note: This project is under development. The default development branch is `Dynamic-sketchpath`. To test currently,open the `skechers.pde` under the `SKECHERS` directory inside the project's root and write your sketch within the file. Dynamic sketchfile paths functionality will be pushed soon.
 
-Note: If you run into any errors while installing, make sure you have `python >=3` installed on your windows machine.
+Note: If you run into any errors while installing, make sure you have `python >=3` installed on your windows/linux machine.
 [Download Python](https://www.python.org/ftp/python/3.13.0/python-3.13.0-amd64.exe).
 
 Note: If you run into any errors while installing, make sure you have `openJdk 7` installed for the node modules dependency 
 `npm i java`. Refer to the following link to download it: [Download openJDK](https://github.com/alexkasko/openjdk-unofficial-builds#openjdk-unofficial-installers-for-windows-linux-and-mac-os-x), and it should be added to your system's environment variables.
-
