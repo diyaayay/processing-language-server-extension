@@ -25,22 +25,21 @@
 
 - [Node.js](https://nodejs.org/) (version 18 or higher)
 - [npm](https://www.npmjs.com/)
+- [python >=3](https://www.python.org/ftp/python/3.13.0/python-3.13.0-amd64.exe)
+- [openJDK](https://github.com/alexkasko/openjdk-unofficial-builds#openjdk-unofficial-installers-for-windows-linux-and-mac-os-x)
 
 
 ### Setup
 
 ```sh
-git clone --branch Dynamic-sketchpath https://github.com/diyaayay/processing-language-server-extension.git
+git clone --branch Test https://github.com/diyaayay/processing-language-server-extension.git
 cd processing-language-server-extension/
 Run the script dependency.bat through any terminal (e.g., in Windows Powershell, run .\dependency.bat)
 npm install
 npm run watch
 ```
 
-Note: This project is under development. The default development branch is `Dynamic-sketchpath`. To test currently,open the `skechers.pde` under the `SKECHERS` directory inside the project's root and write your sketch within the file. Dynamic sketchfile paths functionality will be pushed soon.
-
-Note: If you run into any errors while installing, make sure you have `python >=3` installed on your windows/linux machine.
-[Download Python](https://www.python.org/ftp/python/3.13.0/python-3.13.0-amd64.exe).
+Note: This project is under development. The default development branch is `Test`. To test, create a sketch directory. The sketch must exist in a directory with the same name as the sketch file itself (e.g., `Sketch101/Sketch101.pde`).    
 
 Note: If you run into any errors while installing, make sure you have `openJdk 7` installed for the node modules dependency 
 `npm i java`. Refer to the following link to download it: [Download openJDK](https://github.com/alexkasko/openjdk-unofficial-builds#openjdk-unofficial-installers-for-windows-linux-and-mac-os-x), and it should be added to your system's environment variables.
