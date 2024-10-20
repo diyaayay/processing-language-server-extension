@@ -24,6 +24,7 @@
 		"vscode": "^1.75.0"
 	},
   "license": "GPL-3.0-only",
+  "icon": "./assets/fileicons/processing-logo.png",
   "activationEvents": [
 		"onLanguage:Processing"
 	],
@@ -104,7 +105,7 @@
 			{
 				"id": "processingTheme",
 				"label": "ProcessingTheme",
-				"path": "./fileicons/processing-icon-theme.json"
+				"path": "./assets/fileicons/processing-icon-theme.json"
 			}
 		]
 
