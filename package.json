@@ -1,6 +1,6 @@
 {
   "name": "processing-language-server-extension",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "Processing Foundation",
   "description": "An LSP Extension for Processing (.pde)",
   "main": "index.js",
